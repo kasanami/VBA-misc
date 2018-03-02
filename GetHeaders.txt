@@ -1,0 +1,48 @@
+Option Explicit
+
+' 指定した Range(横向き) から、0を超えるセルのヘッダーを、繋げて返す
+' @param range_     検索対象のRange
+' @param headerRow  ヘッダーのシート内での位置
+' @param separator_ ヘッダーを繋げる際の区切り文字
+Public Function GetHeadersH(range_ As Range, headerRow As Integer, Optional separator_ As String = " ") As String
+    Dim headers As String
+    headers = ""
+    Dim i As Integer
+    Dim cell_ As Range
+    Dim header As Range
+    For i = 1 To range_.Columns.Count
+        Set cell_ = range_.Cells(1, i)
+        If IsNumeric(cell_) Then
+            If cell_.Value > 0 Then
+                Set header = cell_.Offset(headerRow - range_.Row, 0)
+                headers = headers + separator_ + header
+            End If
+        End If
+    Next
+    GetHeadersH = headers
+End Function
+
+
+' 指定した Range（縦向き） から、0を超えるセルのヘッダーを、繋げて返す
+' @param range_         検索対象のRange
+' @param headerColumn   ヘッダーのシート内での位置
+' @param separator_     ヘッダーを繋げる際の区切り文字
+Public Function GetHeadersV(range_ As Range, headerColumn As Integer, Optional separator_ As String = " ") As String
+    Dim headers As String
+    headers = ""
+    Dim i As Integer
+    Dim cell_ As Range
+    Dim header As Range
+    For i = 1 To range_.Rows.Count
+        Set cell_ = range_.Cells(i, 1)
+        If IsNumeric(cell_) Then
+            If cell_.Value > 0 Then
+                Set header = cell_.Offset(0, headerColumn - range_.Column)
+                headers = headers + separator_ + header
+            End If
+        End If
+    Next
+    GetHeadersV = headers
+End Function
+
+
